@@ -1,15 +1,15 @@
 ﻿<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html lang="en">
-  
+
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Add-PnPHubToHubAssociation | PnP PowerShell </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Add-PnPHubToHubAssociation | PnP PowerShell ">
-    <meta name="generator" content="docfx 2.51.0.0">
-    <meta name="description" content="PnP PowerShell is an open source, community driven, PowerShell Module designed to work against Microsoft 365.">
+    <meta name="generator" content="docfx ">
+  <meta name="description" content="PnP PowerShell is an open source, community driven, PowerShell Module designed to work with Microsoft 365.">
     <link rel="shortcut icon" href="https://c.s-microsoft.com/favicon.ico?v2">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
@@ -17,13 +17,13 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
     <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
-    
-    <meta property="docfx:rel" content="../">
-    <meta property="docfx:newtab" content="true">
+  
+  <meta property="docfx:rel" content="../">
+  <meta property="docfx:newtab" content="true">
   </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -33,7 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../images/logo.svg" alt="">
               </a>
@@ -47,7 +47,7 @@
               </form>
             </div>
           </div>
-        </nav>        
+        </nav>
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -57,17 +57,17 @@
         </div>
       </header>
       <div class="container body-content">
-        
+
         <div id="search-results">
-          <div class="search-list"></div>
+          <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination"></ul>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -77,17 +77,18 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
+                
                   <div class="contribution-panel mobile-hide pull-right">
                       <a href="https://github.com/pnp/powershell/blob/dev/documentation/#L1" title="Improve this Doc" class="improve-doc-lg"><i class="glyphicon glyphicon-pencil"></i></a>
                   </div>
-                    <h1 id="add-pnphubtohubassociation">Add-PnPHubToHubAssociation</h1>
+  <h1 id="add-pnphubtohubassociation">Add-PnPHubToHubAssociation</h1>
 
 <h2 id="synopsis">SYNOPSIS</h2>
 <p><strong>Required Permissions</strong></p>
 <ul>
 <li>SharePoint: Access to the SharePoint Tenant Administration site</li>
 </ul>
-<p>Associates a hub site to a hub site.</p>
+<p>Associates a hub site to another hub site to build a hierarchy of hubs. The association only is a content association, meaning that only the content of the underlying associates sites will surface in webparts such as the news webpart. No other settings will be inherited. At most 3 levels of hubs can be associated with each other.</p>
 <h2 id="syntax">SYNTAX</h2>
 <h3 id="by-id">By Id</h3>
 <pre><code class="lang-powershell">Add-PnPHubToHubAssociation -Source &lt;Guid&gt; -Target &lt;Guid&gt; [-Connection &lt;PnPConnection&gt;]
@@ -106,6 +107,11 @@
 <pre><code class="lang-powershell">Add-PnPHubToHubAssociation -SourceUrl &quot;https://yourtenant.sharepoint.com/sites/sourcehub&quot; -TargetUrl &quot;https://yourtenant.sharepoint.com/sites/targethub&quot;
 </code></pre>
 <p>This example associates the source hub site with the url <a href="https://yourtenant.sharepoint.com/sites/sourcehub">https://yourtenant.sharepoint.com/sites/sourcehub</a> with the target hub site with the url <a href="https://yourtenant.sharepoint.com/sites/targethub">https://yourtenant.sharepoint.com/sites/targethub</a>.</p>
+<h3 id="example-3">EXAMPLE 3</h3>
+<pre><code class="lang-powershell">Add-PnPHubToHubAssociation -SourceUrl &quot;https://yourtenant.sharepoint.com/sites/secondlevelhub&quot; -TargetUrl &quot;https://yourtenant.sharepoint.com/sites/toplevelhub&quot;
+Add-PnPHubToHubAssociation -SourceUrl &quot;https://yourtenant.sharepoint.com/sites/thirdlevelhub&quot; -TargetUrl &quot;https://yourtenant.sharepoint.com/sites/secondlevelhub&quot;
+</code></pre>
+<p>This example associates the source hub site with the url <a href="https://yourtenant.sharepoint.com/sites/secondlevelhub">https://yourtenant.sharepoint.com/sites/secondlevelhub</a> with the target hub site with the url <a href="https://yourtenant.sharepoint.com/sites/toplevelhub">https://yourtenant.sharepoint.com/sites/toplevelhub</a> and then associates the source hub site with the url <a href="https://yourtenant.sharepoint.com/sites/thirdlevelhub">https://yourtenant.sharepoint.com/sites/thirdlevelhub</a> with the target hub site with the url <a href="https://yourtenant.sharepoint.com/sites/secondlevelhub">https://yourtenant.sharepoint.com/sites/secondlevelhub</a> to generate a three-level hub site structure. Note that 3 levels of hub site connections is the maximum supported amount. Content on sites beyond level 3 will not appear in search results.</p>
 <h2 id="parameters">PARAMETERS</h2>
 <h3 id="-connection">-Connection</h3>
 <p>Optional connection to be used by the cmdlet. Retrieve the value for this parameter by either specifying -ReturnConnection on Connect-PnPOnline or by executing Get-PnPConnection.</p>
@@ -173,7 +179,7 @@ Accept wildcard characters: False
             </div>
           </div>        </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -181,14 +187,22 @@ Accept wildcard characters: False
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            
-            <span>Generated by <strong>DocFX</strong></span>
-            <img src="https://telemetry.sharepointpnp.com/@pnp.github.io/index/" alt="spacer">
+      
+      <span>Generated by <strong>DocFX</strong></span>
+            <img src="https://m365-visitor-stats.azurewebsites.net/@pnp.github.io/index/" alt="spacer">
           </div>
         </div>
-      </footer>    </div>
-    
+      </footer>
+    </div>
+
     <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
-    <script type="text/javascript" src="../styles/main.js"></script>  </body>
+    <script type="text/javascript" src="../styles/main.js"></script>
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "ag6usxufyq");
+    </script>  </body>
 </html>

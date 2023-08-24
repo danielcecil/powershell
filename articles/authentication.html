@@ -1,15 +1,15 @@
 ﻿<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html lang="en">
-  
+
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Authentication | PnP PowerShell </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Authentication | PnP PowerShell ">
-    <meta name="generator" content="docfx 2.51.0.0">
-    <meta name="description" content="PnP PowerShell is an open source, community driven, PowerShell Module designed to work against Microsoft 365.">
+    <meta name="generator" content="docfx ">
+  <meta name="description" content="PnP PowerShell is an open source, community driven, PowerShell Module designed to work with Microsoft 365.">
     <link rel="shortcut icon" href="https://c.s-microsoft.com/favicon.ico?v2">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
@@ -17,13 +17,13 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
     <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
-    
-    <meta property="docfx:rel" content="../">
-    <meta property="docfx:newtab" content="true">
+  
+  <meta property="docfx:rel" content="../">
+  <meta property="docfx:newtab" content="true">
   </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -33,7 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../images/logo.svg" alt="">
               </a>
@@ -47,7 +47,7 @@
               </form>
             </div>
           </div>
-        </nav>        
+        </nav>
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -57,17 +57,17 @@
         </div>
       </header>
       <div class="container body-content">
-        
+
         <div id="search-results">
-          <div class="search-list"></div>
+          <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination"></ul>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -77,10 +77,11 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
+                
                   <div class="contribution-panel mobile-hide pull-right">
                       <a href="https://github.com/pnp/powershell/blob/dev/pages/articles/authentication.md/#L1" title="Improve this Doc" class="improve-doc-lg"><i class="glyphicon glyphicon-pencil"></i></a>
                   </div>
-                    <h1 id="authentication">Authentication</h1>
+  <h1 id="authentication">Authentication</h1>
 
 <h2 id="setting-up-access">Setting up Access</h2>
 <p>PnP PowerShell allows you to authenticate with credentials to your tenant. However, due to changes in the underlying SDKs we require you first to register a Azure AD Application which will allow you to authenticate.</p>
@@ -96,22 +97,35 @@ You are not creating a new application in the sense of something that runs in yo
 <p>During execution of the cmdlet you will be talked through the consent flow. This means that a browser window will open, you will be asked to authenticate, and you will be asked to consent to a number of permissions. After this permissions has been granted a new entry will show up if you navigate to <code>Enterprise Applications</code> in your Azure AD. If you want to revoke the consent you can simply remove the entry from the Enterprise Applications.</p>
 <h2 id="setting-up-access-to-your-own-azure-ad-app">Setting up access to your own Azure AD App</h2>
 <p>PnP PowerShell has a cmdlet that allows you to register a new Azure AD App, and optionally generate the certificates for you to use to login with that app.</p>
-<pre><code class="lang-powershell">Register-PnPAzureADApp -ApplicationName PnPRocks -Tenant mytenant.onmicrosoft.com -OutPath c:\mycertificates -DeviceLogin
+<pre><code class="lang-powershell">$result = Register-PnPAzureADApp -ApplicationName &quot;PnP Rocks&quot; -Tenant [yourtenant].onmicrosoft.com -OutPath c:\mycertificates -DeviceLogin
+$result
 </code></pre>
-<p>When you run the cmdlet above you will be asked to navigate to the shown url and enter the code shown. After that a new app will be registerd in the Azure AD (make sure you have the rights to do this), and a certificate will be generated and uploaded to that app. After this a URL will be shown which you have to navigate to to provide consent for this application. By default a limited set of permissions scopes is added, but you can provide the -Scopes parameter to provide your own permission scopes.</p>
-<p>The cmdlet will save both the CER and PFX files to the specified location with the -Outpath parameter. The names of the files will be matching the -ApplicationName parameter, e.g. in the example above the files will be called PnPRocks.cer and PnPRocks.pfx. The output of the cmdlet will show the clientid. After all is set up and consent has been provided you can login using:</p>
-<pre><code class="lang-powershell">Connect-PnPOnline -Url &quot;https://yourtenant.sharepoint.com&quot; -ClientId [clientid] -Tenant [yourtenant.onmicrosoft.com] -CertificatePath certificate.pfx
+<p>When you run the cmdlet above you will be asked to navigate to the shown url and enter the code shown. After that a new app will be registered in the Azure AD (make sure you have the rights to do this), and a certificate will be generated and uploaded to that app. After this a URL will be shown which you have to navigate to to provide consent for this application. By default a limited set of permissions scopes is added, but you can provide the one of the permission parameters (<code>GraphApplicationPermissions</code>, <code>GraphDelegatePermissions</code>, <code>SharePointApplicationPermissions</code>, <code>SharePointDelegatePermissions</code>) to provide your own permission scopes.</p>
+<p>It also returns the private key certificate encoded in base64 encoding. As it spans multiple lines, it is recommended to assign the outcome of <code>Register-PnPAzureAdApp</code> to a variable so you have access to this value more easily. The Base64 encoded private key certificate can be used in your Connect-PnPOnline voiding the need to have access to the physical file:</p>
+<pre><code class="lang-powershell">Connect-PnPOnline [yourtenant].sharepoint.com -ClientId [clientid] -Tenant [yourtenant].onmicrosoft.com -CertificateBase64Encoded [pfx base64 encoded]
+</code></pre>
+<p>The cmdlet will also save both the CER and PFX files to the location specified with the -Outpath parameter. The names of the files will be matching the -ApplicationName parameter, e.g. in the example above the files will be called <code>PnP Rocks.cer</code> and <code>PnP Rocks.pfx</code>. The output of the cmdlet will show the clientid. After all is set up and consent has been provided you can login using:</p>
+<pre><code class="lang-powershell">Connect-PnPOnline [yourtenant].sharepoint.com -ClientId [clientid] -Tenant [yourtenant].onmicrosoft.com -CertificatePath [certificate.pfx]
 </code></pre>
 <h2 id="authenticating-with-credentials">Authenticating with Credentials</h2>
 <p>Enter</p>
-<pre><code class="lang-powershell">Connect-PnPOnline -Url https://contoso.sharepoint.com -Credentials (Get-Credential)
+<pre><code class="lang-powershell">Connect-PnPOnline [yourtenant].sharepoint.com -Credentials (Get-Credential)
 </code></pre>
-<p>and you will be prompted for credentials.</p>
+<p>and you will be prompted for credentials. Using this method you're required to have granted the PnP Management Shell multi-tenant application access rights. You can however register your own application using <code>Register-PnPAzureAzureApp</code> and then provide the <code>-ClientId</code> parameter with the client id/app id of your custom application.</p>
 <h2 id="authenticating-with-pre-stored-credentials-using-the-windows-credential-manager-windows-only">Authenticating with pre-stored credentials using the Windows Credential Manager (Windows only)</h2>
 <pre><code class="lang-powershell">Add-PnPStoredCredential -Name &quot;yourlabel&quot; -Username youruser@domain.com
 </code></pre>
 <p>You will be prompted to provide a password. After that you can login using:</p>
-<pre><code class="lang-powershell">Connect-PnPOnline -Url https://contoso.sharepoint.com -Credentials &quot;yourlabel&quot;
+<pre><code class="lang-powershell">Connect-PnPOnline [yourtenant].sharepoint.com -Credentials &quot;yourlabel&quot;
+</code></pre>
+<p>When you create the stored credentials (with Add-PnPStoredCredential or any other tool) if the Name you give it is the URL for your tenant you can omit the -Credentials parameter with Connect-PnPOnline. Using the example above create your stored credential with this command:</p>
+<pre><code class="lang-powershell">Add-PnPStoredCredential -Name &quot;https://[yourtenant].sharepoint.com&quot; -Username youruser@contoso.com
+</code></pre>
+<p>When connecting to <a href="https://yourtenant.sharepoint.com">https://yourtenant.sharepoint.com</a> you can use this command:</p>
+<pre><code class="lang-powershell">Connect-PnPOnline [yourtenant].sharepoint.com 
+</code></pre>
+<p>Connect-PnPOnline will look through the Windows Credential Manager for a credential matching the URL. If it finds one it will use it. It will also match that credential with deeper connection URLs like <a href="https://yourtenant.sharepoint.com/sites/IT">https://yourtenant.sharepoint.com/sites/IT</a>. You can create additional stored credentials for deeper sites if you routinely connect to them with different credentials. If you want to connect with a different set of credentials you can use the -Credentials parameter to specify them. A stored credential can be used for other URLs, like the Admin site:</p>
+<pre><code class="lang-powershell">Connect-PnPOnline [yourtenant]-admin.sharepoint.com -Credentials https://[yourtenant].sharepoint.com 
 </code></pre>
 <h2 id="authenticating-with-pre-stored-credentials-using-the-secrets-management-module-from-microsoft-multi-platform">Authenticating with pre-stored credentials using the Secrets Management Module from Microsoft (Multi-Platform)</h2>
 <pre><code class="lang-powershell">Install-Module -Name Microsoft.PowerShell.SecretManagement -AllowPrerelease
@@ -124,8 +138,64 @@ Set-Secret -Name &quot;yourlabel&quot; -Secret (Get-Credential)
 </code></pre>
 <p>For more information about these cmdlets, check out the github repositories: <a href="https://github.com/powershell/secretmanagement">https://github.com/powershell/secretmanagement</a> and <a href="https://github.com/powershell/secretstore">https://github.com/powershell/secretstore</a>.</p>
 <p>After you set up the vault and you added a credential</p>
-<pre><code class="lang-powershell">Connect-PnPOnline -Url https://contoso.sharepoint.com -Credentials (Get-Secret -Name &quot;yourlabel&quot;)
+<pre><code class="lang-powershell">Connect-PnPOnline [yourtenant].sharepoint.com -Credentials (Get-Secret -Name &quot;yourlabel&quot;)
 </code></pre>
+<h2 id="authentication-in-case-you-have-multi-factor-authentication-enabled">Authentication in case you have Multi-Factor authentication enabled</h2>
+<pre><code class="lang-powershell">Connect-PnPOnline[yourtenant].sharepoint.com -Interactive
+</code></pre>
+<p>This will show a popup window which will allow to authenticate and step through the multi-factor authentication flow.</p>
+<h2 id="authentication-to-gcc-or-national-cloud-environments">Authentication to GCC or National Cloud environments</h2>
+<p>In order to authentication to a GCC or a national cloud environment you have to take a few steps. Notice that this will work as of release 1.3.9-nightly or later.</p>
+<h3 id="register-your-own-azure-ad-app">Register your own Azure AD App</h3>
+<p>You are required to register your own Azure AD App in order to authentication</p>
+<pre><code class="lang-powershell">Register-PnPAzureADApp -ApplicationName &quot;PnP PowerShell&quot; -Tenant [yourtenant].onmicrosoft.com -Interactive -AzureEnvironment [USGovernment|USGovernmentHigh|USGovernmentDoD|Germany|China] -SharePointDelegatePermissions AllSites.FullControl -SharePointApplicationPermissions Sites.FullControl.All -GraphApplicationPermissions Group.ReadWrite.All -GraphDelegatePermissions Group.ReadWrite.All
+</code></pre>
+<p>The AzureEnvironment parameter only allows one value. Select the correct one that matches your cloud deployment.</p>
+<p>The above statement grants a few permission scopes. You might want to add more if you want to. Alternatively, after registering the application, navigate to the Azure AD, locate the app registration, and grant more permissions and consent to them.</p>
+<h3 id="optionally-modify-the-manifest-for-the-app">Optionally modify the manifest for the app</h3>
+<p>There is a limitation in the Azure AD for national cloud environments where you cannot select permission scopes for SharePoint Online. In order to add specific SharePoint rights you will have to manually add them to the manifest that you can edit in Azure AD:</p>
+<p>Locate the <code>requiredResourceAccess</code> section and add to or modify the existing entries. See the example below (notice, this is an example, do not copy and paste this as is as it will limit the permissions to only AllSites.FullControl):</p>
+<pre><code class="lang-json">&quot;requiredResourceAccess&quot;: [
+{
+    &quot;resourceAppId&quot;: &quot;00000003-0000-0ff1-ce00-000000000000&quot;,
+    &quot;resourceAccess&quot;: [
+		{
+			&quot;id&quot;: &quot;56680e0d-d2a3-4ae1-80d8-3c4f2100e3d0&quot;,
+			&quot;type&quot;: &quot;Scope&quot;
+		}
+      ]
+}
+</code></pre>
+<p>You can add more permissions by using the following values:</p>
+<p>The resourceAppId for SharePoint = &quot;00000003-0000-0ff1-ce00-000000000000&quot;</p>
+<table>
+<thead>
+<tr>
+<th>Permission</th>
+<th>Permission type</th>
+<th>Id</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sites.FullControl.All</td>
+<td>Application</td>
+<td>678536fe-1083-478a-9c59-b99265e6b0d3</td>
+<td>Role</td>
+</tr>
+<tr>
+<td>AllSites.FullControl</td>
+<td>Delegate</td>
+<td>56680e0d-d2a3-4ae1-80d8-3c4f2100e3d0</td>
+<td>Scope</td>
+</tr>
+</tbody>
+</table>
+<h3 id="connect">Connect</h3>
+<pre><code class="lang-powershell">Connect-PnPOnline [yourtenant].sharepoint.com -Interactive -ClientId [clientid] -Tenant [yourtenant].onmicrosoft.com -AzureEnvironment [USGovernment|USGovernmentHigh|USGovernmentDoD|Germany|China]
+</code></pre>
+<p>The AzureEnvironment parameter only allows one value. Select the correct one that matches your cloud deployment.</p>
 </article>
           </div>
           <div class="hidden-sm col-md-2" role="complementary">
@@ -135,7 +205,7 @@ Set-Secret -Name &quot;yourlabel&quot; -Secret (Get-Credential)
             </div>
           </div>        </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -143,14 +213,22 @@ Set-Secret -Name &quot;yourlabel&quot; -Secret (Get-Credential)
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            
-            <span>Generated by <strong>DocFX</strong></span>
-            <img src="https://telemetry.sharepointpnp.com/@pnp.github.io/index/" alt="spacer">
+      
+      <span>Generated by <strong>DocFX</strong></span>
+            <img src="https://m365-visitor-stats.azurewebsites.net/@pnp.github.io/index/" alt="spacer">
           </div>
         </div>
-      </footer>    </div>
-    
+      </footer>
+    </div>
+
     <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
-    <script type="text/javascript" src="../styles/main.js"></script>  </body>
+    <script type="text/javascript" src="../styles/main.js"></script>
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "ag6usxufyq");
+    </script>  </body>
 </html>

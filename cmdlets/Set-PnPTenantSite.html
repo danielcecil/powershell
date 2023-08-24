@@ -1,15 +1,15 @@
 ﻿<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html lang="en">
-  
+
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Set-PnPTenantSite | PnP PowerShell </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Set-PnPTenantSite | PnP PowerShell ">
-    <meta name="generator" content="docfx 2.51.0.0">
-    <meta name="description" content="PnP PowerShell is an open source, community driven, PowerShell Module designed to work against Microsoft 365.">
+    <meta name="generator" content="docfx ">
+  <meta name="description" content="PnP PowerShell is an open source, community driven, PowerShell Module designed to work with Microsoft 365.">
     <link rel="shortcut icon" href="https://c.s-microsoft.com/favicon.ico?v2">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
@@ -17,13 +17,13 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
     <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
-    
-    <meta property="docfx:rel" content="../">
-    <meta property="docfx:newtab" content="true">
+  
+  <meta property="docfx:rel" content="../">
+  <meta property="docfx:newtab" content="true">
   </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -33,7 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../images/logo.svg" alt="">
               </a>
@@ -47,7 +47,7 @@
               </form>
             </div>
           </div>
-        </nav>        
+        </nav>
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -57,17 +57,17 @@
         </div>
       </header>
       <div class="container body-content">
-        
+
         <div id="search-results">
-          <div class="search-list"></div>
+          <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination"></ul>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -77,10 +77,11 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
+                
                   <div class="contribution-panel mobile-hide pull-right">
                       <a href="https://github.com/pnp/powershell/blob/dev/documentation/#L1" title="Improve this Doc" class="improve-doc-lg"><i class="glyphicon glyphicon-pencil"></i></a>
                   </div>
-                    <h1 id="set-pnptenantsite">Set-PnPTenantSite</h1>
+  <h1 id="set-pnptenantsite">Set-PnPTenantSite</h1>
 
 <h2 id="synopsis">SYNOPSIS</h2>
 <p><strong>Required Permissions</strong></p>
@@ -90,46 +91,66 @@
 <p>Updates settings of a site collection</p>
 <h2 id="syntax">SYNTAX</h2>
 <h3 id="set-properties">Set Properties</h3>
-<pre><code class="lang-powershell">Set-PnPTenantSite [-Url] &lt;String&gt; [-Title &lt;String&gt;] [-LocaleId &lt;UInt32&gt;] [-AllowSelfServiceUpgrade]
- [-Owners &lt;System.Collections.Generic.List`1[System.String]&gt;] [-DenyAddAndCustomizePages]
- [-SharingCapability &lt;SharingCapabilities&gt;] [-StorageMaximumLevel &lt;Int64&gt;] [-StorageWarningLevel &lt;Int64&gt;]
- [-DefaultLinkPermission &lt;SharingPermissionType&gt;] [-DefaultSharingLinkType &lt;SharingLinkType&gt;]
- [-SharingAllowedDomainList &lt;String&gt;] [-SharingBlockedDomainList &lt;String&gt;] [-BlockDownloadOfNonViewableFiles]
+<pre><code class="lang-powershell">Set-PnPTenantSite [-Identity] &lt;String&gt; [-Title &lt;String&gt;] [-LocaleId &lt;UInt32&gt;] [-AllowSelfServiceUpgrade]
+ [-PrimarySiteCollectionAdmin &lt;String&gt;]
+ [-Owners &lt;String[]&gt;] [-DenyAddAndCustomizePages]
+ [-SharingCapability &lt;SharingCapabilities&gt;] [-StorageQuota &lt;Int64&gt;] [-StorageQuotaWarningLevel &lt;Int64&gt;] [-StorageQuotaReset] [-BlockDownloadLinksFileType &lt;BlockDownloadLinksFileTypes&gt;]
+ [-ResourceQuota &lt;Double&gt;] [-ResourceQuotaWarningLevel &lt;Double&gt;] [-EnablePWA &lt;Boolean&gt;]
+ [-DefaultLinkPermission &lt;SharingPermissionType&gt;] [-DefaultSharingLinkType &lt;SharingLinkType&gt;] [-DefaultLinkToExistingAccess &lt;Boolean&gt;] [-ExternalUserExpirationInDays &lt;Int32&gt;]
+ [-SharingAllowedDomainList &lt;String&gt;] [-SharingBlockedDomainList &lt;String&gt;] [-ShowPeoplePickerSuggestionsForGuestUsers &lt;Boolean&gt;] [-AllowDownloadingOfNonWebViewableFiles]
+ [-LimitedAccessFileType &lt;SPOLimitedAccessFileType&gt;] [-AllowEditing &lt;Boolean&gt;]
  [-SharingDomainRestrictionMode &lt;SharingDomainRestrictionModes&gt;] [-CommentsOnSitePagesDisabled]
  [-DisableAppViews &lt;AppViewsPolicy&gt;] [-DisableCompanyWideSharingLinks &lt;CompanyWideSharingLinksPolicy&gt;]
- [-DisableFlows &lt;FlowsPolicy&gt;] [-AnonymousLinkExpirationInDays &lt;Int32&gt;]
- [-OverrideTenantAnonymousLinkExpirationPolicy] [-Wait] [-Connection &lt;PnPConnection&gt;] [&lt;CommonParameters&gt;]
+ [-DisableFlows &lt;FlowsPolicy&gt;] [-AnonymousLinkExpirationInDays &lt;Int32&gt;] [-SensitivityLabel &lt;String&gt;] [-RemoveLabel] [-AddInformationSegment &lt;Guid[]&gt;] [-RemoveInformationSegment &lt;Guid[]&gt;]
+ [-OverrideTenantAnonymousLinkExpirationPolicy] [-InformationBarriersMode &lt;InformationBarriersMode&gt;] 
+ [-MediaTranscription &lt;MediaTranscriptionPolicyType&gt;] 
+ [-BlockDownloadPolicy &lt;Boolean&gt;] [-ExcludeBlockDownloadPolicySiteOwners &lt;Boolean&gt;]
+ [-ExcludedBlockDownloadGroupIds &lt;Guid[]&gt;]
+ [-ListsShowHeaderAndNavigation &lt;Boolean&gt;]
+ [-Wait] 
+ [-Connection &lt;PnPConnection&gt;] 
 </code></pre>
 <h3 id="set-lock-state">Set Lock State</h3>
-<pre><code class="lang-powershell">Set-PnPTenantSite [-Url] &lt;String&gt; [-LockState &lt;SiteLockState&gt;] [-Wait] [-Connection &lt;PnPConnection&gt;]
- [&lt;CommonParameters&gt;]
+<pre><code class="lang-powershell">Set-PnPTenantSite [-Identity] &lt;String&gt; [-LockState &lt;SiteLockState&gt;] [-Wait] [-Connection &lt;PnPConnection&gt;]
+ 
 </code></pre>
 <h2 id="description">DESCRIPTION</h2>
 <p>Allows settings of a site collection to be updated</p>
 <h2 id="examples">EXAMPLES</h2>
 <h3 id="example-1">EXAMPLE 1</h3>
-<pre><code class="lang-powershell">Set-PnPTenantSite -Url &quot;https://contoso.sharepoint.com&quot; -Title &quot;Contoso Website&quot; -Sharing Disabled
+<pre><code class="lang-powershell">Set-PnPTenantSite -Identity &quot;https://contoso.sharepoint.com&quot; -Title &quot;Contoso Website&quot; -SharingCapability Disabled
 </code></pre>
 <p>This will set the title of the site collection with the URL 'https://contoso.sharepoint.com' to 'Contoso Website' and disable sharing on this site collection.</p>
 <h3 id="example-2">EXAMPLE 2</h3>
-<pre><code class="lang-powershell">Set-PnPTenantSite -Url &quot;https://contoso.sharepoint.com&quot; -Title &quot;Contoso Website&quot; -StorageWarningLevel 8000 -StorageMaximumLevel 10000
+<pre><code class="lang-powershell">Set-PnPTenantSite -Identity &quot;https://contoso.sharepoint.com&quot; -Title &quot;Contoso Website&quot; -StorageWarningLevel 8000 -StorageMaximumLevel 10000
 </code></pre>
 <p>This will set the title of the site collection with the URL 'https://contoso.sharepoint.com' to 'Contoso Website', set the storage warning level to 8GB and set the storage maximum level to 10GB.</p>
 <h3 id="example-3">EXAMPLE 3</h3>
-<pre><code class="lang-powershell">Set-PnPTenantSite -Url &quot;https://contoso.sharepoint.com/sites/sales&quot; -Owners &quot;user@contoso.onmicrosoft.com&quot;
+<pre><code class="lang-powershell">Set-PnPTenantSite -Identity &quot;https://contoso.sharepoint.com/sites/sales&quot; -Owners &quot;user@contoso.onmicrosoft.com&quot;
 </code></pre>
 <p>This will add user@contoso.onmicrosoft.com as an additional site collection owner at 'https://contoso.sharepoint.com/sites/sales'.</p>
 <h3 id="example-4">EXAMPLE 4</h3>
-<pre><code class="lang-powershell">Set-PnPTenantSite -Url &quot;https://contoso.sharepoint.com/sites/sales&quot; -Owners @(&quot;user1@contoso.onmicrosoft.com&quot;, &quot;user2@contoso.onmicrosoft.com&quot;)
+<pre><code class="lang-powershell">Set-PnPTenantSite -Identity &quot;https://contoso.sharepoint.com/sites/sales&quot; -Owners @(&quot;user1@contoso.onmicrosoft.com&quot;, &quot;user2@contoso.onmicrosoft.com&quot;)
 </code></pre>
 <p>This will add user1@contoso.onmicrosoft.com and user2@contoso.onmicrosoft.com as additional site collection owners at 'https://contoso.sharepoint.com/sites/sales'.</p>
 <h3 id="example-5">EXAMPLE 5</h3>
-<pre><code class="lang-powershell">Set-PnPTenantSite -Url &quot;https://contoso.sharepoint.com/sites/sales&quot; -NoScriptSite:$false
+<pre><code class="lang-powershell">Set-PnPTenantSite -Identity &quot;https://contoso.sharepoint.com/sites/sales&quot; -DenyAddAndCustomizePages:$false
 </code></pre>
-<p>This will enable script support for the site 'https://contoso.sharepoint.com/sites/sales' if disabled.</p>
+<p>This will enable script support for the site 'https://contoso.sharepoint.com/sites/sales'</p>
 <h2 id="parameters">PARAMETERS</h2>
+<h3 id="-addinformationsegment">-AddInformationSegment</h3>
+<p>This parameter allows you to add a segment to a SharePoint site. This parameter is only applicable for tenants who have enabled Microsoft 365 Information barriers capability. Please read <a href="https://learn.microsoft.com/sharepoint/information-barriers">https://learn.microsoft.com/sharepoint/information-barriers</a> documentation to understand Information barriers in SharePoint Online.</p>
+<pre><code class="lang-yaml">Type: Guid[]
+Parameter Sets: Set Properties
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+</code></pre>
 <h3 id="-allowselfserviceupgrade">-AllowSelfServiceUpgrade</h3>
-<p>Specifies if the site administrator can upgrade the site collection</p>
+<p>Specifies if the site administrator can upgrade the site collection.</p>
 <pre><code class="lang-yaml">Type: SwitchParameter
 Parameter Sets: Set Properties
 
@@ -139,8 +160,20 @@ Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 </code></pre>
+<h3 id="-allowediting">-AllowEditing</h3>
+<p>Prevents users from editing Office files in the browser and copying and pasting Office file contents out of the browser window.</p>
+<pre><code class="lang-yaml">Type: Boolean
+Parameter Sets: Set Properties
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+</code></pre>
 <h3 id="-anonymouslinkexpirationindays">-AnonymousLinkExpirationInDays</h3>
-<p>{{ Fill AnonymousLinkExpirationInDays Description }}</p>
+<p>Specifies all anonymous/anyone links that have been created (or will be created) will expire after the set number of days. Only applies if OverrideTenantAnonymousLinkExpirationPolicy is set to true.</p>
+<p>To remove the expiration requirement, set the value to zero (0).</p>
 <pre><code class="lang-yaml">Type: Int32
 Parameter Sets: Set Properties
 
@@ -150,7 +183,7 @@ Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 </code></pre>
-<h3 id="-blockdownloadofnonviewablefiles">-BlockDownloadOfNonViewableFiles</h3>
+<h3 id="-allowdownloadofnonviewablefiles">-AllowDownloadOfNonViewableFiles</h3>
 <p>Specifies if non web viewable files can be downloaded.</p>
 <pre><code class="lang-yaml">Type: SwitchParameter
 Parameter Sets: Set Properties
@@ -161,8 +194,23 @@ Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 </code></pre>
+<h3 id="-blockdownloadlinksfiletype">-BlockDownloadLinksFileType</h3>
+<p>The valid values are:</p>
+<p>WebPreviewableFiles
+ServerRenderedFilesOnly</p>
+<p>Note: ServerRendered (Office Only) and WebPreviewable (All supported files).</p>
+<p>The site value is compared with the tenant level setting and the stricter one wins. For example, if the tenant is set to ServerRenderedFilesOnly then that will be used even if the site is set to WebPreviewableFiles.</p>
+<pre><code class="lang-yaml">Type: BlockDownloadLinksFileTypes
+Parameter Sets: Set Properties
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+</code></pre>
 <h3 id="-commentsonsitepagesdisabled">-CommentsOnSitePagesDisabled</h3>
-<p>Specifies if comments on site pages are enabled</p>
+<p>Specifies if comments on site pages are enabled.</p>
 <pre><code class="lang-yaml">Type: SwitchParameter
 Parameter Sets: Set Properties
 
@@ -207,8 +255,19 @@ Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 </code></pre>
+<h3 id="-defaultlinktoexistingaccess">-DefaultLinkToExistingAccess</h3>
+<p>When set to $true, the DefaultSharingLinkType will be overridden and the default sharing link will be All People with Existing Access link (which does not modify permissions). When set to $false (the default), the default sharing link type is controlled by the DefaultSharingLinkType parameter</p>
+<pre><code class="lang-yaml">Type: Boolean
+Parameter Sets: Set Properties
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+</code></pre>
 <h3 id="-denyaddandcustomizepages">-DenyAddAndCustomizePages</h3>
-<p>Determines whether the Add And Customize Pages right is denied on the site collection. For more information about permission levels, see User permissions and permission levels in SharePoint.</p>
+<p>Determines whether the Add And Customize Pages right is denied in the site collection. For more information about permission levels, see User permissions and permission levels in SharePoint.</p>
 <pre><code class="lang-yaml">Type: SwitchParameter
 Parameter Sets: Set Properties
 Aliases: NoScriptSite
@@ -220,9 +279,7 @@ Accept pipeline input: False
 Accept wildcard characters: False
 </code></pre>
 <h3 id="-disableappviews">-DisableAppViews</h3>
-<ul>
-<li></li>
-</ul>
+<p>Determines whether the App Views feature is disabled in the site collection.</p>
 <pre><code class="lang-yaml">Type: AppViewsPolicy
 Parameter Sets: Set Properties
 Accepted values: Unknown, Disabled, NotDisabled
@@ -234,9 +291,7 @@ Accept pipeline input: False
 Accept wildcard characters: False
 </code></pre>
 <h3 id="-disablecompanywidesharinglinks">-DisableCompanyWideSharingLinks</h3>
-<ul>
-<li></li>
-</ul>
+<p>Determines whether company-wide sharing links are disabled in collection.</p>
 <pre><code class="lang-yaml">Type: CompanyWideSharingLinksPolicy
 Parameter Sets: Set Properties
 Accepted values: Unknown, Disabled, NotDisabled
@@ -248,12 +303,46 @@ Accept pipeline input: False
 Accept wildcard characters: False
 </code></pre>
 <h3 id="-disableflows">-DisableFlows</h3>
-<ul>
-<li></li>
-</ul>
+<p>Determines whether flows are disabled in the site collection.</p>
 <pre><code class="lang-yaml">Type: FlowsPolicy
 Parameter Sets: Set Properties
 Accepted values: Unknown, Disabled, NotDisabled
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+</code></pre>
+<h3 id="-externaluserexpirationindays">-ExternalUserExpirationInDays</h3>
+<p>Specifies number of days the external users remain active on the site.</p>
+<pre><code class="lang-yaml">Type: Int32
+Parameter Sets: Set Properties
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+</code></pre>
+<h3 id="-enablepwa">-EnablePWA</h3>
+<p>Determines whether site can include Project Web App. For more information about Project Web App, see Plan SharePoint groups in Project Server.</p>
+<pre><code class="lang-yaml">Type: Boolean
+Parameter Sets: Set Properties
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+</code></pre>
+<h3 id="-limitedaccessfiletype">-LimitedAccessFileType</h3>
+<p>The following parameters can be used with -ConditionalAccessPolicy AllowLimitedAccess for both the organization-wide setting and the site-level setting.</p>
+<p>OfficeOnlineFilesOnly: Allows users to preview only Office files in the browser. This option increases security but may be a barrier to user productivity.</p>
+<p>WebPreviewableFiles (default): Allows users to preview Office files and other file types (such as PDF files and images) in the browser. Note that the contents of file types other than Office files are handled in the browser. This option optimizes for user productivity but offers less security for files that aren't Office files.</p>
+<p>OtherFiles: Allows users to download files that can't be previewed, such as .zip and .exe. This option offers less security.</p>
+<pre><code class="lang-yaml">Type: SPOLimitedAccessFileType
+Parameter Sets: Set Properties
 
 Required: False
 Position: Named
@@ -273,7 +362,7 @@ Accept pipeline input: False
 Accept wildcard characters: False
 </code></pre>
 <h3 id="-lockstate">-LockState</h3>
-<p>Sets the lockstate of a site</p>
+<p>Sets the lockState of a site</p>
 <pre><code class="lang-yaml">Type: SiteLockState
 Parameter Sets: Set Lock State
 Accepted values: Unlock, NoAccess, ReadOnly
@@ -285,7 +374,7 @@ Accept pipeline input: False
 Accept wildcard characters: False
 </code></pre>
 <h3 id="-overridetenantanonymouslinkexpirationpolicy">-OverrideTenantAnonymousLinkExpirationPolicy</h3>
-<p>{{ Fill OverrideTenantAnonymousLinkExpirationPolicy Description }}</p>
+<p>Specifies whether to use company-wide or a site collection level anonymous links expiration policy. Set it to true to get advantage of AnonymousLinkExpirationInDays.</p>
 <pre><code class="lang-yaml">Type: SwitchParameter
 Parameter Sets: Set Properties
 
@@ -295,8 +384,19 @@ Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 </code></pre>
+<h3 id="-primarysitecollectionadmin">-PrimarySiteCollectionAdmin</h3>
+<p>Specifies the user to set as the primary site collection administrator. Will replace the current primary site collection administrator. To add additional site collection administrators, use the -Owners parameter.</p>
+<pre><code class="lang-yaml">Type: PnP.PowerShell.Commands.Base.PipeBinds.UserPipeBind
+Parameter Sets: Set Properties
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+</code></pre>
 <h3 id="-owners">-Owners</h3>
-<p>Specifies owner(s) to add as site collection administrators. They will be added as additional site collection administrators. Existing administrators will stay. Can be both users and groups.</p>
+<p>Specifies owner(s) to add as secondary site collection administrators. They will be added as additional secondary site collection administrators. Existing administrators will stay. Can be both users and groups.</p>
 <pre><code class="lang-yaml">Type: System.Collections.Generic.List`1[System.String]
 Parameter Sets: Set Properties
 
@@ -306,8 +406,30 @@ Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 </code></pre>
+<h3 id="-sensitivitylabel">-SensitivityLabel</h3>
+<p>Set the sensitivity label.</p>
+<pre><code class="lang-yaml">Type: String
+Parameter Sets: Set Properties
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+</code></pre>
+<h3 id="-removelabel">-RemoveLabel</h3>
+<p>Remove the assigned sensitivity label of a site.</p>
+<pre><code class="lang-yaml">Type: SwitchParameter
+Parameter Sets: Set Properties
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+</code></pre>
 <h3 id="-sharingalloweddomainlist">-SharingAllowedDomainList</h3>
-<p>Specifies a list of email domains that is allowed for sharing with the external collaborators. Use the space character as the delimiter for entering multiple values. For example, &quot;contoso.com fabrikam.com&quot;.</p>
+<p>Specifies a list of email domains that is allowed for sharing with the external collaborators. Use the &quot;,&quot; (comma) character as the delimiter for entering multiple values. For example, &quot;contoso.com, fabrikam.com&quot;. Effective when SharingDomainRestrictionMode is set to AllowList.</p>
 <pre><code class="lang-yaml">Type: String
 Parameter Sets: Set Properties
 
@@ -318,7 +440,7 @@ Accept pipeline input: False
 Accept wildcard characters: False
 </code></pre>
 <h3 id="-sharingblockeddomainlist">-SharingBlockedDomainList</h3>
-<p>Specifies a list of email domains that is blocked for sharing with the external collaborators. Use the space character as the delimiter for entering multiple values. For example, &quot;contoso.com fabrikam.com&quot;.</p>
+<p>Specifies a list of email domains that is blocked for sharing with the external collaborators. Use the space character as the delimiter for entering multiple values. For example, &quot;contoso.com fabrikam.com&quot;. Effective when SharingDomainRestrictionMode is set to BlockList.</p>
 <pre><code class="lang-yaml">Type: String
 Parameter Sets: Set Properties
 
@@ -353,9 +475,9 @@ Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 </code></pre>
-<h3 id="-storagemaximumlevel">-StorageMaximumLevel</h3>
-<p>Specifies the storage quota for this site collection in megabytes. This value must not exceed the company's available quota.</p>
-<pre><code class="lang-yaml">Type: Int64
+<h3 id="-showpeoplepickersuggestionsforguestusers">-ShowPeoplePickerSuggestionsForGuestUsers</h3>
+<p>To enable the option to search for existing guest users at Site Collection Level, set this parameter to $true.</p>
+<pre><code class="lang-yaml">Type: Boolean
 Parameter Sets: Set Properties
 
 Required: False
@@ -364,10 +486,79 @@ Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 </code></pre>
-<h3 id="-storagewarninglevel">-StorageWarningLevel</h3>
-<p>Specifies the warning level for the storage quota in megabytes. This value must not exceed the values set for the StorageMaximumLevel parameter</p>
+<h3 id="-storagequota">-StorageQuota</h3>
+<p>Specifies the storage quota for this site collection in megabytes. This value must not exceed the company's available quota.</p>
 <pre><code class="lang-yaml">Type: Int64
 Parameter Sets: Set Properties
+Aliases: StorageMaximumLevel
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+</code></pre>
+<h3 id="-storagequotawarninglevel">-StorageQuotaWarningLevel</h3>
+<p>Specifies the warning level for the storage quota in megabytes. This value must not exceed the values set for the StorageQuota parameter.</p>
+<pre><code class="lang-yaml">Type: Int64
+Parameter Sets: Set Properties
+Aliases: StorageQuotaMaximumLevel
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+</code></pre>
+<h3 id="-storagequotareset">-StorageQuotaReset</h3>
+<p>Resets the OneDrive for Business storage quota to the tenant's new default storage space</p>
+<pre><code class="lang-yaml">Type: SwitchParameter
+Parameter Sets: Set Properties
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+</code></pre>
+<h3 id="-removeinformationsegment">-RemoveInformationSegment</h3>
+<p>This parameter allows you to remove a segment from a SharePoint site. This parameter is only applicable for tenants who have enabled Microsoft 365 Information barriers capability. Please read <a href="https://learn.microsoft.com/sharepoint/information-barriers">https://learn.microsoft.com/sharepoint/information-barriers</a> documentation to understand Information barriers with SharePoint Online.</p>
+<pre><code class="lang-yaml">Type: Guid[]
+Parameter Sets: Set Properties
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+</code></pre>
+<h3 id="-resourcequota">-ResourceQuota</h3>
+<p>Specifies the resource quota in megabytes of the site collection. The default value is 0.</p>
+<pre><code class="lang-yaml">Type: Double
+Parameter Sets: Set Properties
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+</code></pre>
+<h3 id="-resourcequotawarninglevel">-ResourceQuotaWarningLevel</h3>
+<p>Specifies the warning level in megabytes of the site collection to warn the site collection administrator that the site is approaching the resource quota.</p>
+<pre><code class="lang-yaml">Type: Double
+Parameter Sets: Set Properties
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+</code></pre>
+<h3 id="-informationbarriersmode">-InformationBarriersMode</h3>
+<p>Specifies the information barrier mode which helps strengthen access, sharing, and membership of a site based on its information barrier mode and segments associated with the site. Expected values are <code>Open</code>, <code>OwnerModerated</code> , <code>Implicit</code> and <code>Explicit</code>. For more information, see <a href="https://learn.microsoft.com/sharepoint/information-barriers#information-barriers-modes-and-sharepoint-sites">https://learn.microsoft.com/sharepoint/information-barriers#information-barriers-modes-and-sharepoint-sites</a></p>
+<pre><code class="lang-yaml">Type: InformationBarriersMode
+Parameter Sets: Set Properties
+Accepted values: Open, OwnerModerated, Implicit, Explicit
 
 Required: False
 Position: Named
@@ -376,7 +567,7 @@ Accept pipeline input: False
 Accept wildcard characters: False
 </code></pre>
 <h3 id="-title">-Title</h3>
-<p>Specifies the title of the site</p>
+<p>Specifies the title of the site.</p>
 <pre><code class="lang-yaml">Type: String
 Parameter Sets: Set Properties
 
@@ -386,15 +577,72 @@ Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 </code></pre>
-<h3 id="-url">-Url</h3>
-<p>Specifies the URL of the site</p>
+<h3 id="-identity">-Identity</h3>
+<p>Specifies the URL of the site.</p>
 <pre><code class="lang-yaml">Type: String
 Parameter Sets: (All)
+Aliases: Url
 
 Required: True
 Position: 0
 Default value: None
 Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+</code></pre>
+<h3 id="-mediatranscription">-MediaTranscription</h3>
+<p>When the feature is enabled, videos can have transcripts generated on demand or generated automatically in certain scenarios. This is the default because the policy is default on. If a video owner decides they don’t want the transcript, they can always hide or delete it from that video.</p>
+<pre><code class="lang-yaml">Type: MediaTranscriptionPolicyType
+Parameter Sets: Set Properties
+Accepted values: Enabled, Disabled
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+</code></pre>
+<h3 id="-blockdownloadpolicy">-BlockDownloadPolicy</h3>
+<p>Set this to true to block download of files from SharePoint sites or OneDrive</p>
+<pre><code class="lang-yaml">Type: Boolean
+Parameter Sets: Set Properties
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+</code></pre>
+<h3 id="-excludeblockdownloadpolicysiteowners">-ExcludeBlockDownloadPolicySiteOwners</h3>
+<p>Set this to true to exempts site owners from the block download policy so that they can fully download any content for the site.</p>
+<pre><code class="lang-yaml">Type: Boolean
+Parameter Sets: Set Properties
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+</code></pre>
+<h3 id="-excludedblockdownloadgroupids">-ExcludedBlockDownloadGroupIds</h3>
+<p>Exempts users from the mentioned groups from this policy and they can fully download any content for the site.</p>
+<pre><code class="lang-yaml">Type: GUID[]
+Parameter Sets: Set Properties
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+</code></pre>
+<h3 id="-listsshowheaderandnavigation">-ListsShowHeaderAndNavigation</h3>
+<p>Set a property on a site collection to make all lists always load with the site elements intact.</p>
+<pre><code class="lang-yaml">Type: Boolean
+Parameter Sets: Set Properties
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
 Accept wildcard characters: False
 </code></pre>
 <h3 id="-wait">-Wait</h3>
@@ -419,7 +667,7 @@ Accept wildcard characters: False
             </div>
           </div>        </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -427,14 +675,22 @@ Accept wildcard characters: False
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            
-            <span>Generated by <strong>DocFX</strong></span>
-            <img src="https://telemetry.sharepointpnp.com/@pnp.github.io/index/" alt="spacer">
+      
+      <span>Generated by <strong>DocFX</strong></span>
+            <img src="https://m365-visitor-stats.azurewebsites.net/@pnp.github.io/index/" alt="spacer">
           </div>
         </div>
-      </footer>    </div>
-    
+      </footer>
+    </div>
+
     <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
-    <script type="text/javascript" src="../styles/main.js"></script>  </body>
+    <script type="text/javascript" src="../styles/main.js"></script>
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "ag6usxufyq");
+    </script>  </body>
 </html>

@@ -1,15 +1,15 @@
 ﻿<!DOCTYPE html>
 <!--[if IE]><![endif]-->
 <html lang="en">
-  
+
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Using PnP PowerShell in Azure Functions | PnP PowerShell </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Using PnP PowerShell in Azure Functions | PnP PowerShell ">
-    <meta name="generator" content="docfx 2.51.0.0">
-    <meta name="description" content="PnP PowerShell is an open source, community driven, PowerShell Module designed to work against Microsoft 365.">
+    <meta name="generator" content="docfx ">
+  <meta name="description" content="PnP PowerShell is an open source, community driven, PowerShell Module designed to work with Microsoft 365.">
     <link rel="shortcut icon" href="https://c.s-microsoft.com/favicon.ico?v2">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
@@ -17,13 +17,13 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
     <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
-    
-    <meta property="docfx:rel" content="../">
-    <meta property="docfx:newtab" content="true">
+  
+  <meta property="docfx:rel" content="../">
+  <meta property="docfx:newtab" content="true">
   </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
       <header>
-        
+
         <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
           <div class="container">
             <div class="navbar-header">
@@ -33,7 +33,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              
+
               <a class="navbar-brand" href="../index.html">
                 <img id="logo" class="svg" src="../images/logo.svg" alt="">
               </a>
@@ -47,7 +47,7 @@
               </form>
             </div>
           </div>
-        </nav>        
+        </nav>
         <div class="subnav navbar navbar-default">
           <div class="container hide-when-search" id="breadcrumb">
             <ul class="breadcrumb">
@@ -57,17 +57,17 @@
         </div>
       </header>
       <div class="container body-content">
-        
+
         <div id="search-results">
-          <div class="search-list"></div>
+          <div class="search-list">Search Results for <span></span></div>
           <div class="sr-items">
             <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
           </div>
-          <ul id="pagination"></ul>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
         </div>
       </div>
       <div role="main" class="container body-content hide-when-search">
-        
+
         <div class="sidenav hide-when-search">
           <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
           <div class="sidetoggle collapse" id="sidetoggle">
@@ -77,55 +77,198 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
+                
                   <div class="contribution-panel mobile-hide pull-right">
                       <a href="https://github.com/pnp/powershell/blob/dev/pages/articles/azurefunctions.md/#L1" title="Improve this Doc" class="improve-doc-lg"><i class="glyphicon glyphicon-pencil"></i></a>
                   </div>
-                    <h1 id="using-pnp-powershell-in-azure-functions">Using PnP PowerShell in Azure Functions</h1>
+  <h1 id="using-pnp-powershell-in-azure-functions">Using PnP PowerShell in Azure Functions</h1>
 
 <p>In this article we will setup an Azure Function to use PnP PowerShell</p>
-<h2 id="create-the-function-app">Create the function app</h2>
-<p>As the UI in <a href="https://portal.azure.com">https://portal.azure.com</a> changes every now and then, but the principles stay the same, follow the following steps:</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>Notice that the Azure Function scripts in this article run in a separate thread/job. We do this because of possible conflicts between assemblies of already loaded PowerShell modules and PnP PowerShell (for instance, the Az cmdlets that get loaded by default use some of the same assemblies as PnP PowerShell but in different versions which can cause conflicts). By running the script in a separate thread we will not have these conflicts. If PnP PowerShell is the only module currently being used and loaded in your Azure Function you don't need the Start-ThreadJob construct and you can simply write the script as usual.</p>
+</div>
+<h2 id="create-the-azure-function-app">Create the Azure Function App</h2>
+<p>As the UI in <a href="https://portal.azure.com">the Azure Portal</a> changes every now and then, but the principles stay the same, follow the following steps:</p>
 <ol>
-<li>Create a new Function App and navigate there when ready.</li>
-<li>Make sure you select the option to run PowerShell V3 functions, based upon PowerShell 7.</li>
+<li><p>Go to the <a href="https://portal.azure.com">Azure Portal</a> and login with your Azure credentials</p>
+</li>
+<li><p>Create a new Function App using the <strong>Create a resource</strong> button and searching for <strong>Function App</strong> or use this <a href="https://portal.azure.com/#create/Microsoft.FunctionApp">direct link</a> to locate it</p>
+<p><img src="../images/azurefunctions/createresource.png" alt="Creating an Azure resource"></p>
+<p><img src="../images/azurefunctions/createfunctionappresource.png" alt="Creating a function app resource"></p>
+</li>
+<li><p>Choose runtime stack <code>PowerShell Core</code> and version <code>7.2</code> (7.0 is not longer an option as of December 3rd, 2022)</p>
+<p><img src="../images/azurefunctions/createfunctionappbasics.png" alt="Create function app basics"></p>
+</li>
+<li><p>Select <code>Windows</code> as the operating system or else you will not be able to perform the following steps from your browser.</p>
+<p><img src="../images/azurefunctions/createfunctionapphosting.png" alt="Create function app hosting"></p>
+</li>
+<li><p>Complete the creation of the Azure Function</p>
+</li>
+<li><p>Once the resource has been created, click on <strong>Go to resource</strong> to open the Azure Function</p>
+<p><img src="../images/azurefunctions/createfunctionappcompleted.png" alt="Go to resource"></p>
+</li>
 </ol>
-<h2 id="make-pnp-powershell-available-to-all-functions-in-the-app">Make PnP PowerShell available to all functions in the app</h2>
+<h2 id="configure-the-azure-function">Configure the Azure Function</h2>
+<p>Now your Azure Function has been created, proceed with the next paragraphs to configure it for using PnP PowerShell.</p>
+<h3 id="disable-the-azure-cmdlets-in-the-azure-function">Disable the Azure cmdlets in the Azure Function</h3>
+<p>The Azure Function comes with the Azure cmdlets pre-installed. If you don't need them, you can disable them to save some memory and processing time. It will also avoid version conflicts with PnP PowerShell, so it is highly recommended to disable them.</p>
 <ol>
 <li><p>Navigate to <code>App files</code> which is located the left side menu of the function app under the <code>Functions</code> header.</p>
+<p><img src="../images/azurefunctions/functionappappfilesmenu.png" alt="Navigate to App files"></p>
 </li>
-<li><p>In the dropdown presented, select <code>requirements.psd1</code>. You'll notice that the function app wants to provide the Azure cmdlets. If you do not need those, consider removing the <code>Az</code> entry presented.</p>
-</li>
-<li><p>Add a new entry or replace the whole contents of the file with:</p>
-<pre><code class="lang-powershell">@{
-    'PnP.PowerShell' = '0.3.9-nightly'
-}
-</code></pre>
-</li>
-<li><p>The version that will be installed will be the specified nightly build.</p>
-</li>
-<li><p>The moment we release a full 1.0 release you can use wildcards too:</p>
-<pre><code class="lang-powershell">@{
-    'PnP.PowerShell' = '1.*'
- }
-</code></pre>
-</li>
-<li><p>This will then automatically download any minor version of the major 1 release when available. Notice that you cannot use wildcards to specify a nightly build.</p>
-</li>
-</ol>
-<p>If you decide to remove the Az cmdlets, save the <code>requirements.psd1</code> file and edit the <code>profile.psd</code> file. Mark out the following block in the file as follows:</p>
+<li><p>To disable the Az cmdlets, save and edit the <code>profile.psd</code> file. Mark out the following block in the file as follows, if not already done:</p>
 <pre><code class="lang-powershell"># if ($env:MSI_SECRET) {
 #     Disable-AzContextAutosave -Scope Process | Out-Null     
 #     Connect-AzAccount -Identity
 # }
 </code></pre>
-<p>Save the file.</p>
-<h2 id="create-your-credentials">Create your credentials</h2>
+<p>Save the <code>profile.ps1</code> file. If you don't do this and enable a managed identity on the Azure Function, it will throw an exception.</p>
+<p><img src="../images/azurefunctions/disableazinprofile.png" alt="Disable the Az commands in profile"></p>
+</li>
+</ol>
+<h3 id="make-pnp-powershell-available-to-all-functions-in-the-azure-function-app">Make PnP PowerShell available to all functions in the Azure function App</h3>
+<ol>
+<li><p>Navigate to <code>App files</code> which is located the left side menu of the function app under the <code>Functions</code> header.</p>
+<p><img src="../images/azurefunctions/functionappappfilesmenu.png" alt="Navigate to App files"></p>
+</li>
+<li><p>In the dropdown presented near the top, select <code>requirements.psd1</code>. You'll notice that the function app wants to provide the Azure cmdlets. If you do not need those, keep the <code>Az</code> entry presented commented out.</p>
+<p><img src="../images/azurefunctions/functionappappfilesdropdown.png" alt="Navigate to requirements.psd1"></p>
+</li>
+<li><p>Add a new entry or replace the whole contents of the file with one of the following and remember to save the <code>requirements.psd1</code> file:</p>
+</li>
+</ol>
+<h4 id="specific-stable-version">Specific stable version</h4>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>There's currently no stable PnP PowerShell version that works with Azure Functions. Use the <a href="#specific-prerelease-version">latest nightly build</a> instead.</p>
+</div>
+<pre><code class="lang-powershell">@{
+    'PnP.PowerShell' = '1.12.0'
+}
+</code></pre>
+<p>The version that will be installed will be the specified specific build, which is generally recommended. You build and test your Azure Function against this specific PnP PowerShell version. Future releases may work differently and cause issues, therefore it is generally recommended to specify a specific version here.</p>
+<h4 id="latest-stable-version">Latest stable version</h4>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>There's currently no stable PnP PowerShell version that works with Azure Functions. Use the <a href="#specific-prerelease-version">latest nightly build</a> instead.</p>
+</div>
+<p>If, for some reason, you would like to ensure it is always using the latest available PnP PowerShell version, you can also specify a wildcard in the version (not recommended):</p>
+<pre><code class="lang-powershell">@{
+    'PnP.PowerShell' = '1.*'
+ }
+</code></pre>
+<p>This will then automatically download any minor version of the major 1 release when available. Note that wildcards will always take the latest stable version and not the nightly build/prerelease versions.</p>
+<h4 id="specific-prerelease-version">Specific prerelease version</h4>
+<p>If you wish to use a specific prerelease/nightly build version, go to the <a href="https://www.powershellgallery.com/packages/PnP.PowerShell">overview of available versions</a> and literally copy/paste the version in the definition, i.e.:</p>
+<pre><code class="lang-powershell">@{
+    'PnP.PowerShell' = '2.0.45-nightly'
+ }
+</code></pre>
+<p><img src="../images/azurefunctions/addpnpposhtoappfilerequirements.png" alt="Adding PnP PowerShell to the requirements.psd1 file in an Azure Function"></p>
+<h2 id="decide-how-you-want-to-authenticate-in-your-azure-function">Decide how you want to authenticate in your Azure Function</h2>
+<h3 id="by-using-a-managed-identity">By using a Managed Identity</h3>
+<p>The recommended option is to use a <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview">managed identity in Azure</a> to allow your Azure Function to connect to Microsoft Graph or SharePoint Online using PnP PowerShell. Using this method, you specifically grant permissions for your Azure Function or Runbook to access these permissions, without having any client secret or certificate pair that potentially could fall into wrong hands. This makes this option the most secure option by far. Since version 1.11.95-nightly, Managed Identities are both supported against SharePoint Online as well as Microsoft Graph cmdlets. Before this version, only Microsoft Graph was being supported.</p>
+<h4 id="enabling-the-managed-identity-for-an-azure-function">Enabling the managed identity for an Azure Function</h4>
+<ol>
+<li><p>In your Azure Function, in the left menu, go to Identity</p>
+</li>
+<li><p>Ensure you are on the System assigned tab and flip the switch for Status to On</p>
+</li>
+<li><p>Click the save button and confirm your action in the dialog box that will be shown</p>
+</li>
+</ol>
+<p>A new entry will now automatically be created in your Azure Active Directory for this app having the same name as your Azure Function and the Object (principal) ID shown on this page. Take notice of the Object (principal) ID. We will need it in the next section to assign permissions to.</p>
+<h4 id="assigning-permissions-to-the-managed-identity">Assigning permissions to the managed identity</h4>
+<p>Next step is to assign permissions to this managed identity so it is authorized to access the Microsoft Graph and/or SharePoint Online.</p>
+<ol>
+<li><p>If you don't know which permissions exist yet, you can use the below sample to get a list of all available permissions:</p>
+<pre><code class="lang-powershell">Get-PnPAzureADServicePrincipal -BuiltInType MicrosoftGraph | Get-PnPAzureADServicePrincipalAvailableAppRole
+Get-PnPAzureADServicePrincipal -BuiltInType SharePointOnline | Get-PnPAzureADServicePrincipalAvailableAppRole
+</code></pre>
+</li>
+<li><p>Once you know which permissions you would like to assign, you can use the below samples. Note that the Principal requires the object Id (not the application/client id) or the application name.</p>
+<pre><code class="lang-powershell">Add-PnPAzureADServicePrincipalAppRole -Principal &quot;62614f96-cb78-4534-bf12-1f6693e8237c&quot; -AppRole &quot;Group.Read.All&quot; -BuiltInType MicrosoftGraph
+Add-PnPAzureADServicePrincipalAppRole -Principal &quot;mymanagedidentity&quot; -AppRole &quot;Sites.FullControl.All&quot; -BuiltInType SharePointOnline
+</code></pre>
+</li>
+</ol>
+<h4 id="create-the-azure-function-for-managed-identity-authentication">Create the Azure Function for managed identity authentication</h4>
+<p>Create a new function and replace the function code with the following example:</p>
+<pre><code class="lang-powershell">using namespace System.Net
+
+param($Request, $TriggerMetadata)
+
+Connect-PnPOnline -ManagedIdentity
+Get-PnPMicrosoft365Group
+
+Push-OutputBinding -Name Response -Value ([HttpResponseContext]@{
+    StatusCode = [HttpStatusCode]::OK
+})
+
+</code></pre>
+<p>Notice the super clean and simple <code>Connect-PnPOnline</code>. Nothing that could fall into wrong hands, no client secret or certificate that could expire. Based on the permissions assigned to the managed identity, it will be able to authenticate and authorize access to the Microsoft Graph APIs used behind the cmdlet to fetch the data.</p>
+<h3 id="by-using-a-certificate">By using a certificate</h3>
+<h4 id="create-your-certificate">Create your certificate</h4>
+<p>In this following example we create a new Azure AD Application registration which creates your certificates. You can also use a private/public certificate key pair you already have.</p>
+<pre><code class="lang-powershell">$password = Read-Host -Prompt &quot;Enter certificate password&quot; -AsSecureString
+Register-PnPAzureADApp -ApplicationName &quot;MyDemoApp&quot; -Tenant [yourtenant.onmicrosoft.com] -CertificatePassword $password -Interactive
+</code></pre>
+<p>You will be asked to authenticate. Log in using an account that has the permissions to create an app registration in your Azure Active Directory. After logging in, the following actions will automatically be taken:</p>
+<ul>
+<li>An app registration will be created using the provided name</li>
+<li>A self signed certificate will be generated which includes a pfx and a cer file (private/public key pair)</li>
+<li>The public key of the certificate (cer) will be configured as a valid certificate to authenticate with for the app registration</li>
+<li>A basic set of permissions will be assigned to the app registration. These can freely be changed at will at a later time.</li>
+<li>Admin consent will be given to the given set of permissions</li>
+</ul>
+<p>Make a note of the clientid shown and proceed with the steps in the following section.</p>
+<h4 id="apply-your-certificate">Apply your certificate</h4>
+<p>Once you have an Azure Active Directory application set up and the public key certificate uploaded to its registration, proceed with configuring the Azure Function to make use of the private key of this certificate pair:</p>
+<ol>
+<li>In your function app, navigate to <code>TLS/SSL Settings</code> and switch to the <code>Private Key Certificates (.pfx)</code> section.</li>
+<li>Click <code>Upload Certificate</code> and select the &quot;MyDemoApp.pfx&quot; file that has been created for you. Enter the password you used in the script above.</li>
+<li>After the certificate has been uploaded, copy the thumbprint value shown.</li>
+<li>Navigate to <code>Configuration</code> and add a new Application Setting</li>
+<li>Call the setting <code>WEBSITE_LOAD_CERTIFICATES</code> and set the thumbprint as a value. To make all the certificates you uploaded available use <code>*</code> as the value. See <a href="https://learn.microsoft.com/azure/app-service/configure-ssl-certificate-in-code">https://learn.microsoft.com/azure/app-service/configure-ssl-certificate-in-code</a> for more information.</li>
+<li>Save the settings</li>
+</ol>
+<h4 id="create-the-azure-function-for-certificate-authentication">Create the Azure Function for certificate authentication</h4>
+<p>Create a new function and replace the function code with the following example:</p>
+<pre><code class="lang-powershell">using namespace System.Net
+
+# Input bindings are passed in via param block.
+param($Request, $TriggerMetadata)
+
+# Write to the Azure Functions log stream.
+Write-Host &quot;PowerShell HTTP trigger function processed a request.&quot;
+
+$script = {
+    Connect-PnPOnline tenant.sharepoint.com/sites/demo -ClientId [the clientid created earlier] -Thumbprint [the thumbprint you copied] -Tenant [tenant.onmicrosoft.com]
+
+    $web = Get-PnPWeb
+    $web.Title
+}
+
+$webTitle = Start-ThreadJob -Script $script | Receive-Job -Wait
+
+$body = &quot;The title of the web is $($webTitle)&quot;
+
+# Associate values to output bindings by calling 'Push-OutputBinding'.
+Push-OutputBinding -Name Response -Value ([HttpResponseContext]@{
+        StatusCode = [HttpStatusCode]::OK
+        Body = $body
+    })
+</code></pre>
+<h3 id="by-using-credentials">By using Credentials</h3>
+<p>This method is not recommended as it requires you to have an account without MFA of which its credentials will be stored in Azure.</p>
+<h4 id="create-your-credentials">Create your credentials</h4>
 <ol>
 <li>Navigate to <code>Configuration</code> under <code>Settings</code> and create a new Application Setting.</li>
 <li>Enter <code>tenant_user</code> and enter the username you want to authenticate with as the user</li>
 <li>Enter <code>tenant_pwd</code> and enter the password you want to use for that user</li>
 </ol>
-<h2 id="create-the-function">Create the function</h2>
+<h4 id="create-the-function">Create the function</h4>
 <p>Create a new function and replace the function code with following example:</p>
 <pre><code class="lang-powershell">using namespace System.Net
 
@@ -135,14 +278,19 @@ param($Request, $TriggerMetadata)
 # Write to the Azure Functions log stream.
 Write-Host &quot;PowerShell HTTP trigger function processed a request.&quot;
 
-$securePassword = ConvertTo-SecureString $env:tenant_pwd -AsPlainText -Force
-$credentials = New-Object PSCredential ($env:tenant_user, $securePassword)
+$script = {
+    $securePassword = ConvertTo-SecureString $env:tenant_pwd -AsPlainText -Force
+    $credentials = New-Object PSCredential ($env:tenant_user, $securePassword)
 
-Connect-PnPOnline -Url https://yourtenant.sharepoint.com/sites/demo -Credentials $credentials
+    Connect-PnPOnline yourtenant.sharepoint.com/sites/demo -Credentials $credentials
 
-$web = Get-PnPWeb;
+    $web = Get-PnPWeb
+    $web.Title
+}
 
-$body = &quot;The title of the web is $($web.Title)&quot;
+$webTitle = Start-ThreadJob -Script $script | Receive-Job -Wait
+
+$body = &quot;The title of the web is $($webTitle)&quot;
 
 # Associate values to output bindings by calling 'Push-OutputBinding'.
 Push-OutputBinding -Name Response -Value ([HttpResponseContext]@{
@@ -160,7 +308,7 @@ Push-OutputBinding -Name Response -Value ([HttpResponseContext]@{
             </div>
           </div>        </div>
       </div>
-      
+
       <footer>
         <div class="grad-bottom"></div>
         <div class="footer">
@@ -168,14 +316,22 @@ Push-OutputBinding -Name Response -Value ([HttpResponseContext]@{
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            
-            <span>Generated by <strong>DocFX</strong></span>
-            <img src="https://telemetry.sharepointpnp.com/@pnp.github.io/index/" alt="spacer">
+      
+      <span>Generated by <strong>DocFX</strong></span>
+            <img src="https://m365-visitor-stats.azurewebsites.net/@pnp.github.io/index/" alt="spacer">
           </div>
         </div>
-      </footer>    </div>
-    
+      </footer>
+    </div>
+
     <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
     <script type="text/javascript" src="../styles/docfx.js"></script>
-    <script type="text/javascript" src="../styles/main.js"></script>  </body>
+    <script type="text/javascript" src="../styles/main.js"></script>
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "ag6usxufyq");
+    </script>  </body>
 </html>
