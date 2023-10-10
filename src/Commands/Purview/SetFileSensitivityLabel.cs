@@ -61,10 +61,10 @@ namespace PnP.PowerShell.Commands.Purview
             string encodedUrl = "u!" + base64Value.TrimEnd('=').Replace('/', '_').Replace('+', '-');
             string url = $"/beta/shares/{encodedUrl}/driveItem/assignSensitivityLabel";
 
-            var jsonSerializer = new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull, };
+            var jsonSerializer = new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull, PropertyNamingPolicy = JsonNamingPolicy.CamelCase};
             jsonSerializer.Converters.Add(new JsonStringEnumConverter());
 
-            string json = JsonSerializer.Serialize(new SensitivityLabelAssignment { SensitivityLabelId = sensitivityLabelId, SensitivityLabelAssignmentMethod = Enums.SensitivityLabelAssignmentMethod.privileged, JustificationText = JustificationText }, jsonSerializer);
+            string json = JsonSerializer.Serialize(new SensitivityLabelAssignment { SensitivityLabelId = sensitivityLabelId, SensitivityLabelAssignmentMethod = "privileged", JustificationText = JustificationText }, jsonSerializer);
             var stringContent = new StringContent(json);
             stringContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
             var response = GraphHelper.PostAsync(Connection, url, stringContent, AccessToken).GetAwaiter().GetResult();

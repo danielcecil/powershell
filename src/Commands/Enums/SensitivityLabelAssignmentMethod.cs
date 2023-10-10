@@ -3,7 +3,7 @@ namespace PnP.PowerShell.Commands.Enums
     /// <summary>
     /// Enum that defines the possible types of users
     /// </summary>
-    public enum SensitivityLabelAssignmentMethod
+public enum SensitivityLabelAssignmentMethod
     {
         /// <summary>
         /// The assignment method for the label is standard.

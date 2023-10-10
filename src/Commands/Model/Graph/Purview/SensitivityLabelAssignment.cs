@@ -1,8 +1,11 @@
 using System;
 using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace PnP.PowerShell.Commands.Model.Graph.Purview
 {
+    [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public class SensitivityLabelAssignment
     {
         /// <summary>
@@ -15,7 +18,7 @@ namespace PnP.PowerShell.Commands.Model.Graph.Purview
         public Guid? TenantId { get; set; }
 
         [JsonPropertyName("assignmentMethod")]
-        public Enums.SensitivityLabelAssignmentMethod SensitivityLabelAssignmentMethod { get; set; }
+        public string SensitivityLabelAssignmentMethod { get; set; }
 
         [JsonPropertyName("justificationText")]
         public string JustificationText { get; set; }
