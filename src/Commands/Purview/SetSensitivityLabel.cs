@@ -36,7 +36,7 @@ namespace PnP.PowerShell.Commands.Purview
             List list;
             if (List != null)
             {
-                list = List.GetList(CurrentWeb);
+                list = List.GetList(CurrentWeb, l => l.Id, l => l.Title);
             }
             else
             {
@@ -46,6 +46,8 @@ namespace PnP.PowerShell.Commands.Purview
                 }
 
                 list = ListItem.Item.ParentList;
+                list.Context.Load(list, l => l.Id, l => l.Title);
+                list.Context.ExecuteQueryRetry();
             }
 
             if (ListItem == null || (ListItem.Item == null && ListItem.Id == 0))
