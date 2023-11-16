@@ -4,6 +4,7 @@ using PnP.PowerShell.Commands.Enums;
 using PnP.PowerShell.Commands.Utilities.REST;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Management.Automation;
 using System.Text.Json;
@@ -15,20 +16,34 @@ namespace PnP.PowerShell.Commands.Purview
     [OutputType(typeof(void))]
     public class SetSensitivityLabel : PnPWebCmdlet
     {
-        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
+
+        const string ParameterSet_SET = "Set the Sensitivity Label";
+        const string ParameterSet_CLEAR = "Clear the Sensitivity Label";
+
+        [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0, ParameterSetName = ParameterSet_SET)]
+        [Parameter(ParameterSetName = ParameterSet_CLEAR)]
         public ListItemPipeBind ListItem;
 
-        [Parameter(Mandatory = false)]
+        [Parameter(Mandatory = false, ParameterSetName = ParameterSet_SET)]
+        [Parameter(ParameterSetName = ParameterSet_CLEAR)]
         public ListPipeBind List;
 
-        [Parameter(Mandatory = true)]
+        [Parameter(Mandatory = true, ParameterSetName = ParameterSet_SET)]
         public SensitivityLabelPipeBind Label;
 
-        [Parameter(Mandatory = false)]
+        [Parameter(Mandatory = false, ParameterSetName = ParameterSet_SET)]
+        [Parameter(ParameterSetName = ParameterSet_CLEAR)]
+        public SensitivityLabelPipeBind PreviousLabel;
+
+        [Parameter(Mandatory = false, ParameterSetName = ParameterSet_SET)]
         public string JustificationText = String.Empty;
 
-        [Parameter(Mandatory = false)]
+        [Parameter(Mandatory = false, ParameterSetName = ParameterSet_SET)]
+        [Parameter(ParameterSetName = ParameterSet_CLEAR)]
         public SensitivityLabelAssignmentMethod AssignmentMethod = SensitivityLabelAssignmentMethod.Privileged;
+
+        [Parameter(Mandatory = false, ParameterSetName = ParameterSet_CLEAR)]
+        public SwitchParameter ClearLabel;
 
         protected override void ExecuteCmdlet()
         {
@@ -57,18 +72,26 @@ namespace PnP.PowerShell.Commands.Purview
             ListItem item = ListItem.GetListItem(list)
                 ?? throw new PSArgumentException($"Provided -ListItem is not valid.", nameof(ListItem)); ;
 
-            Guid? labelId;
-            if (Label.LabelId == null)
+            string labelId = ClearLabel.IsPresent ? String.Empty : Label.LabelId.ToString();
+            if (Label.LabelId == null && !ClearLabel.IsPresent)
             {
                 var labelLookup = Label.GetLabelByNameThroughGraph(Connection, GraphAccessToken);
-                if(labelLookup == null) {
+                if (labelLookup == null)
+                {
                     throw new PSArgumentException($"Provided -Label is not valid. Try passing in a Label or Id from the Get-PnPAvailableSensitivityLabel command.", nameof(Label));
                 }
-                labelId = labelLookup.Id;
+                labelId = labelLookup.Id.ToString();
             }
-            else
+
+            string prevLabelId = ParameterSpecified(nameof(PreviousLabel)) ? PreviousLabel.LabelId.ToString() : String.Empty;
+            if (ParameterSpecified(nameof(PreviousLabel)) && PreviousLabel.LabelId == null)
             {
-                labelId = Label.LabelId;
+                var prevLabelLookup = PreviousLabel.GetLabelByNameThroughGraph(Connection, GraphAccessToken);
+                if (prevLabelLookup == null)
+                {
+                    throw new PSArgumentException($"Provided -PreviousLabel is not valid. Try passing in a Label or Id from the Get-PnPAvailableSensitivityLabel command.", nameof(Label));
+                }
+                prevLabelId = prevLabelLookup.Id.ToString();
             }
 
             Guid listId = list.Id;
@@ -99,7 +122,8 @@ namespace PnP.PowerShell.Commands.Purview
             {
                 id = labelId,
                 assignmentMethod = AssignmentMethod.ToString(),
-                justificationText = JustificationText
+                justificationText = JustificationText,
+                ifMatchLabelId = prevLabelId
             });
 
             var setLabelResponse = RestHelper.ExecutePostRequest(ClientContext, url, content);
