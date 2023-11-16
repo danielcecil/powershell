@@ -12,9 +12,9 @@ using System.Text.Json.Serialization;
 
 namespace PnP.PowerShell.Commands.Purview
 {
-    [Cmdlet(VerbsCommon.Set, "PnPSensitivityLabel")]
+    [Cmdlet(VerbsCommon.Set, "PnPListItemSensitivityLabel")]
     [OutputType(typeof(void))]
-    public class SetSensitivityLabel : PnPWebCmdlet
+    public class SetListItemSensitivityLabel : PnPWebCmdlet
     {
 
         const string ParameterSet_SET = "Set the Sensitivity Label";
@@ -22,7 +22,7 @@ namespace PnP.PowerShell.Commands.Purview
 
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0, ParameterSetName = ParameterSet_SET)]
         [Parameter(ParameterSetName = ParameterSet_CLEAR)]
-        public ListItemPipeBind ListItem;
+        public ListItemPipeBind Identity;
 
         [Parameter(Mandatory = false, ParameterSetName = ParameterSet_SET)]
         [Parameter(ParameterSetName = ParameterSet_CLEAR)]
@@ -54,23 +54,23 @@ namespace PnP.PowerShell.Commands.Purview
             }
             else
             {
-                if (ListItem.Item == null)
+                if (Identity.Item == null)
                 {
-                    throw new PSArgumentException($"No -List has been provided specifying the list to update the item in", nameof(ListItem));
+                    throw new PSArgumentException($"No -List has been provided specifying the list to update the item in", nameof(List));
                 }
 
-                list = ListItem.Item.ParentList;
+                list = Identity.Item.ParentList;
                 list.Context.Load(list, l => l.Id, l => l.Title);
                 list.Context.ExecuteQueryRetry();
             }
 
-            if (ListItem == null || (ListItem.Item == null && ListItem.Id == 0))
+            if (Identity == null || (Identity.Item == null && Identity.Id == 0))
             {
-                throw new PSArgumentException($"No -ListItem has been provided specifying the item to update", nameof(ListItem));
+                throw new PSArgumentException($"No -Identity has been provided specifying the item to update", nameof(Identity));
             }
 
-            ListItem item = ListItem.GetListItem(list)
-                ?? throw new PSArgumentException($"Provided -ListItem is not valid.", nameof(ListItem)); ;
+            ListItem item = Identity.GetListItem(list)
+                ?? throw new PSArgumentException($"Provided -Identity is not valid.", nameof(Identity)); ;
 
             string labelId = ClearLabel.IsPresent ? String.Empty : Label.LabelId.ToString();
             if (Label.LabelId == null && !ClearLabel.IsPresent)
@@ -113,7 +113,7 @@ namespace PnP.PowerShell.Commands.Purview
             object itemUid;
             if (!item.FieldValues.TryGetValue("UniqueId", out itemUid))
             {
-                throw new PSArgumentNullException($"The -ListItem does not contain a UniqueId property.", nameof(ListItem));
+                throw new PSArgumentNullException($"The -Identity does not contain a UniqueId property.", nameof(Identity));
             }
 
             string url = "/v2.1/drives/" + listDrive.Id + "/items/" + itemUid + "/setsensitivityLabel";

@@ -6,12 +6,12 @@ using System.Management.Automation;
 
 namespace PnP.PowerShell.Commands.Purview
 {
-    [Cmdlet(VerbsCommon.Get, "PnPSensitivityLabel")]
+    [Cmdlet(VerbsCommon.Get, "PnPListItemSensitivityLabel")]
     [OutputType(typeof(InformationProtectionLabel))]
-    public class GetSensitivityLabel : PnPWebCmdlet
+    public class GetListItemSensitivityLabel : PnPWebCmdlet
     {
         [Parameter(Mandatory = true, ValueFromPipeline = true, Position = 0)]
-        public ListItemPipeBind ListItem;
+        public ListItemPipeBind Identity;
         [Parameter(Mandatory = false)]
         public ListPipeBind List;
 
@@ -24,21 +24,21 @@ namespace PnP.PowerShell.Commands.Purview
             }
             else
             {
-                if (ListItem.Item == null)
+                if (Identity.Item == null)
                 {
-                    throw new PSArgumentException($"No -List has been provided specifying the list to update the item in", nameof(ListItem));
+                    throw new PSArgumentException($"No -List has been provided specifying the list to update the item in", nameof(Identity));
                 }
 
-                list = ListItem.Item.ParentList;
+                list = Identity.Item.ParentList;
             }
 
-            if (ListItem == null || (ListItem.Item == null && ListItem.Id == 0))
+            if (Identity == null || (Identity.Item == null && Identity.Id == 0))
             {
-                throw new PSArgumentException($"No -ListItem has been provided specifying the item to update", nameof(ListItem));
+                throw new PSArgumentException($"No -Identity has been provided specifying the item to update", nameof(Identity));
             }
 
-            ListItem item = ListItem.GetListItem(list)
-                ?? throw new PSArgumentException($"Provided -ListItem is not valid.", nameof(ListItem)); ;
+            ListItem item = Identity.GetListItem(list)
+                ?? throw new PSArgumentException($"Provided -Identity is not valid.", nameof(Identity)); ;
 
 
             object labelGuid;
