@@ -129,10 +129,4 @@ namespace PnP.PowerShell.Commands.Purview
             var setLabelResponse = RestHelper.ExecutePostRequest(ClientContext, url, content);
         }
     }
-
-    public class DriveResult
-    {
-        [JsonPropertyName("value")]
-        public List<Drive> Drives { get; set; }
-    }
 }
