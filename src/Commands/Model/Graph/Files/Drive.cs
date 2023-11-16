@@ -12,19 +12,19 @@ namespace PnP.PowerShell.Commands.Model.Graph.Files
     {
         [JsonPropertyName("id")]
         [Description("The unique identifier of the drive. Read-only.")]
-        public Guid? Id { get; set; }
+        public string Id { get; set; }
 
         [JsonPropertyName("name")]
         [Description("The name of the item. Read-write.")]
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         [JsonPropertyName("description")]
         [Description("Provide a user-visible description of the drive. Read-write.")]
-        public String Description { get; set; }
+        public string Description { get; set; }
 
         [JsonPropertyName("driveType")]
         [Description("Describes the type of drive represented by this resource. OneDrive personal drives will return personal. OneDrive for Business will return business. SharePoint document libraries will return documentLibrary. Read-only.")]
-        public String DriveType { get; set; }
+        public string DriveType { get; set; }
 
         [JsonPropertyName("createdDateTime")]
         [Description("Date and time of item creation. Read-only.")]
@@ -44,7 +44,6 @@ namespace PnP.PowerShell.Commands.Model.Graph.Files
         [JsonPropertyName("owner")]
         [Description("	Optional. The user account that owns the drive. Read-only.")]
         public object Owner { get; set; }
-
 
         [JsonPropertyName("quota")]
         [Description("Optional. Information about the drive's storage space quota. Read-only.")]

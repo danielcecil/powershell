@@ -1,8 +1,16 @@
 ﻿using Microsoft.SharePoint.Client;
 using PnP.PowerShell.Commands.Base.PipeBinds;
+using PnP.PowerShell.Commands.Enums;
+using PnP.PowerShell.Commands.Model.Graph.Files;
 using PnP.PowerShell.Commands.Model.Graph.Purview;
+using PnP.PowerShell.Commands.Utilities.REST;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Management.Automation;
+using System.Reflection.Emit;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace PnP.PowerShell.Commands.Purview
 {
@@ -40,15 +48,53 @@ namespace PnP.PowerShell.Commands.Purview
             ListItem item = Identity.GetListItem(list)
                 ?? throw new PSArgumentException($"Provided -Identity is not valid.", nameof(Identity)); ;
 
+            Guid listId = list.Id;
+            string listTitle = list.Title;
 
-            object labelGuid;
-            item.FieldValues.TryGetValue("_IpLabelId", out labelGuid);
+            // Get the Drive objects for the current site
+            string getDrivesResponse = RestHelper.ExecuteGetRequest(ClientContext, "/v2.1/drives");
+            DriveResult driveResult = JsonSerializer.Deserialize<DriveResult>(getDrivesResponse);
 
-            if (!String.IsNullOrEmpty((string)labelGuid))
+            // Find the Drive object for the current list
+            Drive listDrive = driveResult.Drives.FirstOrDefault(i => i.Name == listTitle);
+
+            if (listDrive == null)
             {
-                WriteObject(new SensitivityLabelPipeBind((string)labelGuid).GetLabelByIdThroughGraph(Connection, GraphAccessToken));
+                throw new PSArgumentException($"The -List that has been provided could not be found. Check that the List is a Document Library.", nameof(List));
             }
 
+            // Ensure the UniqueId is present on the ListItem object.
+            object itemUid;
+            if (!item.FieldValues.TryGetValue("UniqueId", out itemUid))
+            {
+                throw new PSArgumentNullException($"The -Identity does not contain a UniqueId property.", nameof(Identity));
+            }
+
+            string url = "/v2.1/drives/" + listDrive.Id + "/items/" + itemUid + "/extractSensitivityLabels";
+
+            ExtractSensitivityLabelsResult extractLabelResponse = RestHelper.ExecutePostRequest<ExtractSensitivityLabelsResult>(ClientContext, url, String.Empty);
+
+            if (extractLabelResponse != null)
+            {
+                WriteObject(new SensitivityLabelPipeBind(extractLabelResponse.Labels.First().LabelId).GetLabelByIdThroughGraph(Connection, GraphAccessToken));
+            }
         }
+    }
+    public class ExtractSensitivityLabelsResult
+    {
+        [JsonPropertyName("labels")]
+        public List<SensitivityLabelAssignment> Labels { get; set; }
+    }
+
+    public class SensitivityLabelAssignment
+    {
+        [JsonPropertyName("assignmentMethod")]
+        public string AssignmentMethod { get; set; }
+
+        [JsonPropertyName("sensitivityLabelId")]
+        public string LabelId { get; set; }
+
+        [JsonPropertyName("tenantId")]
+        public string TenantId { get; set; }
     }
 }
