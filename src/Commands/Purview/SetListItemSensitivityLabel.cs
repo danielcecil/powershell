@@ -1,6 +1,7 @@
 ﻿using Microsoft.SharePoint.Client;
 using PnP.PowerShell.Commands.Base.PipeBinds;
 using PnP.PowerShell.Commands.Enums;
+using PnP.PowerShell.Commands.Model.Graph.Files;
 using PnP.PowerShell.Commands.Utilities.REST;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,6 @@ namespace PnP.PowerShell.Commands.Purview
     [OutputType(typeof(void))]
     public class SetListItemSensitivityLabel : PnPWebCmdlet
     {
-
         const string ParameterSet_SET = "Set the Sensitivity Label";
         const string ParameterSet_CLEAR = "Clear the Sensitivity Label";
 
@@ -134,14 +134,5 @@ namespace PnP.PowerShell.Commands.Purview
     {
         [JsonPropertyName("value")]
         public List<Drive> Drives { get; set; }
-    }
-
-    public class Drive
-    {
-        [JsonPropertyName("id")]
-        public string Id { get; set; }
-
-        [JsonPropertyName("name")]
-        public string Name { get; set; }
     }
 }
