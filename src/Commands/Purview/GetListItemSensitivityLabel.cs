@@ -74,8 +74,9 @@ namespace PnP.PowerShell.Commands.Purview
 
             ExtractSensitivityLabelsResult extractLabelResponse = RestHelper.ExecutePostRequest<ExtractSensitivityLabelsResult>(ClientContext, url, String.Empty);
 
-            if (extractLabelResponse != null)
+            if (extractLabelResponse.Labels.Count > 0)
             {
+                // TODO: Check for multiple Labels and fetch the one with a matching TenantId or First()
                 WriteObject(new SensitivityLabelPipeBind(extractLabelResponse.Labels.First().LabelId).GetLabelByIdThroughGraph(Connection, GraphAccessToken));
             }
         }

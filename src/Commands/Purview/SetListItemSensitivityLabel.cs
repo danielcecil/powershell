@@ -72,15 +72,27 @@ namespace PnP.PowerShell.Commands.Purview
             ListItem item = Identity.GetListItem(list)
                 ?? throw new PSArgumentException($"Provided -Identity is not valid.", nameof(Identity)); ;
 
-            string labelId = ClearLabel.IsPresent ? String.Empty : Label.LabelId.ToString();
-            if (Label.LabelId == null && !ClearLabel.IsPresent)
+            string labelId;
+
+            if (ClearLabel.IsPresent)
             {
-                var labelLookup = Label.GetLabelByNameThroughGraph(Connection, GraphAccessToken);
-                if (labelLookup == null)
+                labelId = String.Empty;
+            }
+            else
+            {
+                if (ParameterSpecified(nameof(Label)) && Label.LabelId == null)
                 {
-                    throw new PSArgumentException($"Provided -Label is not valid. Try passing in a Label or Id from the Get-PnPAvailableSensitivityLabel command.", nameof(Label));
+                    var labelLookup = Label.GetLabelByNameThroughGraph(Connection, GraphAccessToken);
+                    if (labelLookup == null)
+                    {
+                        throw new PSArgumentException($"Provided -Label is not valid. Try passing in a Label or Id from the Get-PnPAvailableSensitivityLabel command.", nameof(Label));
+                    }
+                    labelId = labelLookup.Id.ToString();
                 }
-                labelId = labelLookup.Id.ToString();
+                else
+                {
+                    labelId = Label.LabelId.ToString();
+                }
             }
 
             string prevLabelId = ParameterSpecified(nameof(PreviousLabel)) ? PreviousLabel.LabelId.ToString() : String.Empty;
