@@ -11,6 +11,11 @@ namespace PnP.PowerShell.Commands.Base.PipeBinds
         private readonly int _id;
         private readonly string _loginOrName;
         private readonly User _user;
+        public int Id => _id;
+
+        public User User => _user;
+
+        public string LoginName => _loginOrName;
 
         public UserPipeBind()
         {
